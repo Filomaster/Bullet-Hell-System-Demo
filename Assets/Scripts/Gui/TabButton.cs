@@ -14,15 +14,20 @@ public class TabButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     public string buttonName;
     public TextMeshProUGUI tabName;
     public int emmiterIndex;
+    public string tabKey;
     // Start is called before the first frame update
     void Awake()
     {
         background = GetComponent<Image>();
         tabGroup.Subscribe(this);
-
-        tabName.text = buttonName;
     }
 
+    private void Start()
+    {
+        Debug.Log(buttonName);
+        tabName.text = tabKey;
+        tabGroup.OnTabSelect(this);
+    }
     public void OnPointerClick(PointerEventData eventData)
     {
         tabGroup.OnTabSelect(this);

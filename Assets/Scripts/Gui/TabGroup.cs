@@ -15,6 +15,10 @@ public class TabGroup : MonoBehaviour
     public Sprite tabSprite;
     public Sprite tabActive;
 
+
+    public TabButton selectedTab;
+    public Emmiter tabEmmiter;
+
     private GuiController controller;
     private BulletSystemController bulletSystem;
     private void Start()
@@ -22,9 +26,10 @@ public class TabGroup : MonoBehaviour
         controller = GuiController.Instance;
         bulletSystem = BulletSystemController.BulletSystem;
 
-        foreach (EmmiterGroup emmiter in bulletSystem.emmitersGroups)
+        foreach (KeyValuePair<string, Emmiter> emmiter in bulletSystem.emmitersGroups)
         {
-            AddNewTab(true);
+            AddNewTab(emmiter.Key);
+
         }
     }
 
@@ -37,7 +42,8 @@ public class TabGroup : MonoBehaviour
     public void OnTabEnter(TabButton button)
     {
         ResetTabs();
-        button.background.color = hoveredColor;
+        if (selectedTab != null && button != selectedTab)
+            button.background.color = hoveredColor;
     }
 
     public void OnTabExit(TabButton button)
@@ -48,29 +54,44 @@ public class TabGroup : MonoBehaviour
     public void OnTabSelect(TabButton button)
     {
         ResetTabs();
+        selectedTab = button;
         button.background.sprite = tabActive;
         button.background.color = activeColor;
+        controller.emmiter = bulletSystem.emmitersGroups[button.tabKey];
+        controller.ResetControlsOnTabChange();
     }
 
     public void ResetTabs()
     {
         foreach (TabButton button in tabButtons)
         {
+            if (selectedTab != null && button == selectedTab) continue;
             button.background.color = idleColor;
             button.background.sprite = tabSprite;
         }
     }
 
-    public void AddNewTab(bool isInitial)
+    public void AddNewTab(string key)
     {
         GameObject newTab = tabPrefab;
         TabButton button = tabPrefab.GetComponent<TabButton>();
-        newTab.name = button.name = "Emmiter Group";
+        // button.tabEmmiter = tabEmmiter;
         button.tabGroup = this;
-        if (!isInitial)
-            button.emmiterIndex = bulletSystem.CreateEmmiterGroup();
-        else
-            button.emmiterIndex = 0;
+        button.emmiterIndex = 0;
+        button.tabKey = key;
+        // selectedTab = button;
+        // newTab.transform.parent = parent.transform;
+        Instantiate(newTab, parent.transform);
+    }
+    public void AddNewTab()
+    {
+        GameObject newTab = tabPrefab;
+        TabButton button = tabPrefab.GetComponent<TabButton>();
+        // button.tabEmmiter = tabEmmiter;
+        button.tabGroup = this;
+        newTab.name = button.name = button.tabKey = bulletSystem.CreateEmmiterGroup();
+
+        // newTab.transform.parent = parent.transform;
         Instantiate(newTab, parent.transform);
     }
 }
