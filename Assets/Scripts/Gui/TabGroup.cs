@@ -94,4 +94,9 @@ public class TabGroup : MonoBehaviour
         // newTab.transform.parent = parent.transform;
         Instantiate(newTab, parent.transform);
     }
+
+    void DeleteTab()
+    {
+
+    }
 }

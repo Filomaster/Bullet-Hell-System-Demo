@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletScript : MonoBehaviour
+public class BulletScript : MonoBehaviour, IPooledObject
 {
 
-    public float deceleration;
-    public float decelerationRate;
     public float ttl = 5f;
     private Rigidbody body;
     private void Awake()
@@ -15,14 +13,20 @@ public class BulletScript : MonoBehaviour
         body = this.GetComponent<Rigidbody>();
         // InvokeRepeating("Decelerate", 0, 1);
     }
-    private void Start()
+    public void OnObjectSpawn(float deceleration, float ttl)
     {
-        Destroy(this.gameObject, ttl);
+        Debug.Log("Test");
+        // Destroy(this.gameObject, ttl);
         body.drag = deceleration;
-
+        this.ttl = ttl;
+        StartCoroutine("Deactivate");
     }
-    void Decelerate()
+
+
+    IEnumerator Deactivate()
     {
-        body.drag = deceleration;
+        yield return new WaitForSeconds(ttl);
+        this.gameObject.SetActive(false);
+        Debug.Log("Deactivated after " + ttl);
     }
 }

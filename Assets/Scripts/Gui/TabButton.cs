@@ -24,7 +24,6 @@ public class TabButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
 
     private void Start()
     {
-        Debug.Log(buttonName);
         tabName.text = tabKey;
         tabGroup.OnTabSelect(this);
     }

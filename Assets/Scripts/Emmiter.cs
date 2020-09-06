@@ -7,7 +7,9 @@ public class Emmiter : MonoBehaviour
     public GameObject bullet;
     public Color bulletColor;
     public GameObject parent;
+    public string tag;
     public GameObject bulletGroup;
+    private BulletSystemController controller;
     [Header("Bullets properties")]
     [Range(10f, 20f)]
     public float BulletSpeed = 10.0f;
@@ -42,6 +44,7 @@ public class Emmiter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        controller = BulletSystemController.BulletSystem;
         if (parent == null)
         {
             parent = this.gameObject;
@@ -75,11 +78,10 @@ public class Emmiter : MonoBehaviour
             Vector3 bulletMoveVector = new Vector3(bulletDirectionX, 1, bulletDirectionZ);
             Vector3 bulletDirection = (bulletMoveVector - shift).normalized;
 
-            GameObject test = Instantiate(bullet, bulletDirection, Quaternion.identity, this.transform);
+            // float ttl = 5 - Mathf.RoundToInt(BulletSpeed) - Mathf.RoundToInt(emmitersCount / 5);
+            // if (ttl < 1) ttl = 1f;
+            GameObject test = controller.SpawnFromPool(tag, bulletDirection, Quaternion.identity, bulletDeceleration, ttl);
             BulletScript bul = test.GetComponent<BulletScript>();
-            bul.deceleration = bulletDeceleration;
-            bul.decelerationRate = decelerationTime;
-            bul.ttl = ttl;
             test.GetComponent<Renderer>().material.SetColor("_EmissionColor", bulletColor);
             test.GetComponent<Rigidbody>().AddForce(new Vector3(BulletSpeed * bulletDirectionX * SpeedMultiplier, 0, BulletSpeed * bulletDirectionZ * SpeedMultiplier));
             currentAngle += angleStep;
