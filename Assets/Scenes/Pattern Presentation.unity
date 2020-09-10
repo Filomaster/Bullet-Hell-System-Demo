@@ -4435,6 +4435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emmiter: {fileID: 1681227694}
+  version: {fileID: 0}
   parent: {fileID: 1681227692}
   speedSlider: {fileID: 1579669427}
   bulletSpeedValue: {fileID: 509638493}
@@ -4456,7 +4457,7 @@ MonoBehaviour:
   rotationValue: {fileID: 2001192998}
   childrenRotationSlider: {fileID: 1606477204}
   childrenRotationValue: {fileID: 1131559599}
-  parentRotationSlider: {fileID: 1738606912}
+  parentRotationSlider: {fileID: 1249955685}
   parentRotationValue: {fileID: 1892285457}
   lifetimeSlider: {fileID: 1738606912}
   lifetimeValue: {fileID: 697549311}

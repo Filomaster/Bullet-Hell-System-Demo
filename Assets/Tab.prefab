@@ -139,7 +139,7 @@ MonoBehaviour:
   buttonName: 
   tabName: {fileID: 8037881622903279504}
   emmiterIndex: 0
-  tabKey: emmiter_1
+  tabKey: emmiter_2
 --- !u!114 &5917170184461781801
 MonoBehaviour:
   m_ObjectHideFlags: 0
