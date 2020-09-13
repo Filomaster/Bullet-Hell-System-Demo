@@ -9,7 +9,7 @@ public class GuiController : MonoBehaviour
 
     public Emmiter emmiter;
     public TextMeshProUGUI version;
-    private static string VERSION = "0.1a";
+    private static string VERSION = "0.2a";
     public GameObject parent;
     [Header("Speed")]
     public Slider speedSlider;
@@ -55,6 +55,13 @@ public class GuiController : MonoBehaviour
     public Sprite pauseButton;
     public Sprite playButton;
 
+    [Header("FPS counter")]
+    public TextMeshProUGUI counter;
+    [Range(0.5f, 5f)]
+    public float refreshRate = 1f;
+    private float timer;
+    private float current_fps;
+
     private BulletSystemController bulletSystemController;
     public static GuiController Instance;
 
@@ -80,6 +87,28 @@ public class GuiController : MonoBehaviour
             angleSlider.value = emmiter.angle;
             angleValue.text = emmiter.angle.ToString("0");
         }
+
+        if (Time.unscaledTime > timer)
+        {
+            current_fps = 1f / Time.unscaledDeltaTime;
+            counter.text = "FPS: " + (int)current_fps;
+            timer = Time.unscaledTime + refreshRate;
+            if (current_fps >= 55.0f)
+            {
+                counter.color = new Color32(0, 255, 0, 255);
+                return;
+            }
+            else if (current_fps >= 25.0f)
+            {
+                counter.color = new Color32(255, 255, 0, 255);
+                return;
+            }
+            else
+            {
+                counter.color = new Color32(255, 0, 0, 255);
+            }
+        }
+
     }
     public void OnSpeedChange()
     {
